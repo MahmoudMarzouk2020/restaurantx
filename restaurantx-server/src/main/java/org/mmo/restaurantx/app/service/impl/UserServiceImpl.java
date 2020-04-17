@@ -1,7 +1,10 @@
 package org.mmo.restaurantx.app.service.impl;
 
 import org.mmo.restaurantx.app.domain.User;
-import org.mmo.restaurantx.app.payload.LoginRequest;
+import org.mmo.restaurantx.app.payload.mapper.CustomerRegistrationMapper;
+import org.mmo.restaurantx.app.payload.request.CustomerRegistrationRequest;
+import org.mmo.restaurantx.app.payload.request.LoginRequest;
+import org.mmo.restaurantx.app.payload.response.ApiResponse;
 import org.mmo.restaurantx.app.payload.response.AuthenticationResponse;
 import org.mmo.restaurantx.app.repository.UserRepository;
 import org.mmo.restaurantx.app.security.JwtUtil;
@@ -16,40 +19,53 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl implements UserService {
     
-    private AuthenticationManager authenticationManager;
-    private JwtUtil jwtUtil;
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil tokenProvider;
+    private final CustomerRegistrationMapper customerRegistrationMapper;
     
-    public UserServiceImpl(UserRepository userRepository, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+    public UserServiceImpl(UserRepository userRepository,
+                           AuthenticationManager authenticationManager,
+                           JwtUtil tokenProvider,
+                           CustomerRegistrationMapper customerRegistrationMapper) {
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
+        this.tokenProvider = tokenProvider;
+        this.customerRegistrationMapper = customerRegistrationMapper;
     }
     
-    public ResponseEntity<?> addNewCustomer(User user) {
-        return ResponseEntity.ok("done");
-    }
-    
-    public ResponseEntity<AuthenticationResponse> authenticateUser(LoginRequest authenticationRequest) {
-        String userEmail = authenticationRequest.getEmail();
-        String password = authenticationRequest.getPassword();
-        AuthenticationResponse authenticationResponse = null;
-        System.out.println(userEmail + " / " + password);
-        if (userRepository.existsByEmailAndPassword(userEmail, password)) {
-            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userEmail, password));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            String jwt = jwtUtil.generateToken(userEmail);
-            
-            authenticationResponse = new AuthenticationResponse(jwt);
-            authenticationResponse.setSuccess(true);
-            authenticationResponse.setMessage("Authenticated Successfully!");
-        } else {
-            authenticationResponse = new AuthenticationResponse();
-            authenticationResponse.setSuccess(false);
-            authenticationResponse.setMessage("Invalid email or password!");
+    @Override
+    public ResponseEntity<ApiResponse> addNewCustomer(CustomerRegistrationRequest registrationRequest) {
+        if (userRepository.existsByEmail(registrationRequest.getEmail())) {
+            return ResponseEntity.badRequest().body(new ApiResponse(false, "Email is already taken!"));
         }
         
-        return ResponseEntity.ok(authenticationResponse);
+        User user = customerRegistrationMapper.fromRequestToModel(registrationRequest);
+        userRepository.save(user);
+        
+        return ResponseEntity.ok(new ApiResponse(true, "User registered successfully"));
+    }
+    
+    @Override
+    public ResponseEntity<AuthenticationResponse> authenticateUser(LoginRequest loginRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+                    loginRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            
+            String jwt = tokenProvider.generateToken(authentication);
+            
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse(jwt);
+            authenticationResponse.setSuccess(true);
+            authenticationResponse.setMessage("Authenticated successfully");
+            return ResponseEntity.ok(authenticationResponse);
+            
+        } catch (Exception ex) {
+            AuthenticationResponse authenticationResponse = new AuthenticationResponse();
+            authenticationResponse.setSuccess(false);
+            authenticationResponse.setMessage("Invalid email or password");
+            return ResponseEntity.badRequest().body(authenticationResponse);
+        }
     }
     
 }

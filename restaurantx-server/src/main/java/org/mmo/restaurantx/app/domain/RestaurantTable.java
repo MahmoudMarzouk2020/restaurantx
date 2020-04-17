@@ -25,7 +25,6 @@ public class RestaurantTable {
     
     @Column(name = "max_number_of_persons")
     @Min(0)
-    @NotNull
     private int maxNoOfPersons;
     
     public RestaurantTable() {

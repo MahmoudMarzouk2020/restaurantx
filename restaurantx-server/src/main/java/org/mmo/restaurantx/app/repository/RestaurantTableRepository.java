@@ -4,11 +4,11 @@ import org.mmo.restaurantx.app.domain.RestaurantTable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface RestaurantTableRepository extends JpaRepository<RestaurantTable, Integer> {
     
-    List<RestaurantTable> findAllByMaxNoOfPersonsIsGreaterThanEqual(int numberOfPersons);
+    Set<RestaurantTable> findByTableIdNotInAndMaxNoOfPersonsGreaterThanEqual(Set<Integer> tablesIdsList, int noOfPersons);
     
 }

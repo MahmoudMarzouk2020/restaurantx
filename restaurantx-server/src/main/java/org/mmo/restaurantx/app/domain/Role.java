@@ -1,6 +1,6 @@
 package org.mmo.restaurantx.app.domain;
 
-import org.mmo.restaurantx.app.domain.enums.RoleName;
+import org.mmo.restaurantx.app.domain.lookup.RoleName;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;

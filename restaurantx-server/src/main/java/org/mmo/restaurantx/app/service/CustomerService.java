@@ -1,12 +1,13 @@
 package org.mmo.restaurantx.app.service;
 
-import org.mmo.restaurantx.app.domain.RestaurantTable;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import org.mmo.restaurantx.app.payload.request.RestaurantTableReservationRequest;
+import org.mmo.restaurantx.app.payload.response.AvailableRestaurantTablesResponse;
+import org.springframework.http.ResponseEntity;
 
 public interface CustomerService {
     
-    List<RestaurantTable> getAvailableTablesByDateTimeAndPersonsNumber(LocalDateTime dateTime, int numberOfPersons);
+    ResponseEntity<AvailableRestaurantTablesResponse> getAvailableTablesByDateTimeAndPersonsNumber(String dateTime, int numberOfPersons);
+    
+    ResponseEntity<?> reserveRestaurantTable(RestaurantTableReservationRequest reservationRequest);
     
 }

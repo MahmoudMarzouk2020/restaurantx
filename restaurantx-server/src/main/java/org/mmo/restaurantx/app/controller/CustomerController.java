@@ -1,27 +1,30 @@
 package org.mmo.restaurantx.app.controller;
 
-import org.mmo.restaurantx.app.domain.RestaurantTable;
+import org.mmo.restaurantx.app.payload.request.RestaurantTableReservationRequest;
+import org.mmo.restaurantx.app.payload.response.AvailableRestaurantTablesResponse;
 import org.mmo.restaurantx.app.service.CustomerService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.time.LocalDateTime;
-import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/cust")
 public class CustomerController {
     
-    private CustomerService customerService;
+    private final CustomerService customerService;
     
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
     
-    @GetMapping("/show-available-tables")
-    public List<RestaurantTable> showAllAvailableTables() {
-        return customerService.getAvailableTablesByDateTimeAndPersonsNumber(LocalDateTime.now(), 3);
+    @GetMapping("/available-tables")
+    public ResponseEntity<AvailableRestaurantTablesResponse> showAllAvailableTables(@RequestParam String dateTime,
+                                                                                    @RequestParam int persons) {
+        return customerService.getAvailableTablesByDateTimeAndPersonsNumber(dateTime, persons);
+    }
+    
+    @PutMapping("/reserve-table")
+    public ResponseEntity<?> reserveRestaurantTable(@RequestBody RestaurantTableReservationRequest reservationRequest) {
+        return customerService.reserveRestaurantTable(reservationRequest);
     }
     
 }
