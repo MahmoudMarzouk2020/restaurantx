@@ -3,6 +3,7 @@ package org.mmo.restaurantx.app.controller;
 import org.mmo.restaurantx.app.payload.request.RestaurantTableReservationRequest;
 import org.mmo.restaurantx.app.payload.response.AvailableRestaurantTablesResponse;
 import org.mmo.restaurantx.app.service.CustomerService;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

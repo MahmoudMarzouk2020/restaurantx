@@ -1,1 +1,22 @@
-<p>home works!</p>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <a class="navbar-brand" href="#">RestaurantX</a>
+  <h4 class="navbar-nav ml-auto text-white mt-3 mr-4">Welcome, {{ authenticationService.getUserFullName() }}</h4>
+  <button class="btn badge-danger btn-sm mr-1 font-weight-bold" (click)="logout()">logout</button>
+</nav>
+
+<div class="bg text-center">
+  <h2 class="pt-4 text-hide shadow">Welcome, to your relaxing area .. RestaurantX</h2>
+</div>
+
+<div class="container rounded-0 shadow shadow-lg text-center align-content-center pt-4 pb-4" style="height: 2600px">
+  <div id="instructions" class="mt-4">
+    <h2>You can choose Date-Time you want and number of guests</h2>
+    <h2>Click on table you want to book, and proceed ...</h2>
+  </div>
+  
+  <div>
+    <app-available-tables *ngIf="!isReservationProcess"></app-available-tables>
+    <app-table-reservation *ngIf="isReservationProcess"></app-table-reservation>
+  </div>
+
+</div>

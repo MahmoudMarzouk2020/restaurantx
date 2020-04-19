@@ -7,5 +7,5 @@ export class User {
   public email: string;
   public password: string;
   public mobileNumber: string;
-  public roles: Role[];
+  public authorities: Role[];
 }

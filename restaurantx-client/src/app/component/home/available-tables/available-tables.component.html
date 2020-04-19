@@ -1,0 +1,25 @@
+<div class="text-left p-4">
+  <label>
+    Date/Time
+    <input type="date" (input)="setDate($event.target)">
+    <input type="text" (input)="setHour($event.target)">
+    <input type="text" (input)="setMin($event.target)">
+  </label>
+  <label>
+    Number of guests
+    <input type="text" (input)="setNoOfPersons($event.target)">
+  </label>
+  <button (click)="checkAvailableTables()">Show Tables</button>
+  
+  <div id="available-tables" class="mt-5">
+    <div class="card bg-info text-white mb-2 shadow table-card" *ngFor="let table of availableTables"
+         (click)="startReservation()">
+      <div class="card-header">Table number: {{ table.tableNumber }}</div>
+      <div class="card-body">
+        <p>Max number of persons: {{ table.maxNoOfPersons }}</p>
+        <p>{{ table.tableDesc }}</p>
+      </div>
+    </div>
+  </div>
+  
+</div>

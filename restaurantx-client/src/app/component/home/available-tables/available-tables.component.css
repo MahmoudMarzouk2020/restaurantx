@@ -1,0 +1,12 @@
+
+.table-card {
+
+}
+
+.table-card > .card-header {
+  font-size: 17px;
+}
+
+.table-card:hover {
+  cursor: pointer;
+}

@@ -7,19 +7,17 @@ import {AuthService} from '../authentication/auth.service';
 })
 export class AuthGuard implements CanActivate {
 
-  private baseURL: string;
+  private baseURL = '/restaurantx/login';
 
   constructor(private router: Router, private authService: AuthService) {
   }
 
   public canActivate(): boolean {
-  //   if (this.authService.isLoggedIn()) {
-  //     return true;
-  //   }
-  //
-  //   this.router.navigate(['/']);
-  //   return false;
-    return true;
+    if (this.authService.isLoggedIn()) {
+      return true;
+    }
+    this.router.navigate([this.baseURL]);
+    return false;
   }
 
 }

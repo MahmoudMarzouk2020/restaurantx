@@ -6,12 +6,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class UserPrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails, Serializable {
     
     private Long id;
     private String email;
@@ -19,20 +20,19 @@ public class UserPrincipal implements UserDetails {
     private String password;
     private String firstName;
     private String lastName;
-    @JsonIgnore
-    private String phoneNumber;
+    private String mobileNumber;
     
     private Collection<? extends GrantedAuthority> authorities;
     
     public UserPrincipal() {
     }
     
-    public UserPrincipal(Long id, String email, String phoneNumber, String password, String firstName,
+    public UserPrincipal(Long id, String email, String mobileNumber, String password, String firstName,
                          String lastName, Collection<? extends GrantedAuthority> authorities) {
         
         this.id = id;
         this.email = email;
-        this.phoneNumber = phoneNumber;
+        this.mobileNumber = mobileNumber;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,8 +51,8 @@ public class UserPrincipal implements UserDetails {
         return id;
     }
     
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getMobileNumber() {
+        return mobileNumber;
     }
     
     public String getFirstName() {
@@ -61,6 +61,14 @@ public class UserPrincipal implements UserDetails {
     
     public String getLastName() {
         return lastName;
+    }
+    
+    public String getEmail() {
+        return email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
     }
     
     @Override

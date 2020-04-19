@@ -8,17 +8,24 @@ export class ServerService {
   private serverPort = '9091';
 
   // Authentication
-  public loginAPI = 'http://' + this.serverIp + ':' + this.serverPort + '/api/authentication/admin/signin';
+  public registerAPI = 'http://' + this.serverIp + ':' + this.serverPort + '/restaurantx/api/auth/register';
+  public loginAPI = 'http://' + this.serverIp + ':' + this.serverPort + '/restaurantx/api/auth/login';
 
-  // User APIs
-  public getAvailableTables = 'http://' + this.serverIp + ':' + this.serverPort + '/api';
-  public bookTable = 'http://' + this.serverIp + ':' + this.serverPort + '/api';
+  // Customer APIs
+  public getAvailableTablesAPI = 'http://' + this.serverIp + ':' + this.serverPort + '/restaurantx/api/cust/available-tables';
+  public bookTableAPI = 'http://' + this.serverIp + ':' + this.serverPort + '/api';
 
   // Admin APIs
-  public getAllTables = 'http://' + this.serverIp + ':' + this.serverPort + '/admin/api';
-  public addTable = 'http://' + this.serverIp + ':' + this.serverPort + '/admin/api';
+  public getAllTablesAPI = 'http://' + this.serverIp + ':' + this.serverPort + '/admin/api';
+  public addTableAPI = 'http://' + this.serverIp + ':' + this.serverPort + '/admin/api';
+  public getAllReservationsAPI = 'http://' + this.serverIp + ':' + this.serverPort + '/admin/api';
 
   constructor() {
+  }
+
+  prepareGetAvailableTablesAPI(dateTime, noOfPersons) {
+    const apiQuery = '?dateTime=' + dateTime + '&persons=' + noOfPersons;
+    return this.getAvailableTablesAPI + apiQuery;
   }
 
 }

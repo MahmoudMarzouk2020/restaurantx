@@ -1,9 +1,12 @@
 package org.mmo.restaurantx.app.payload.response;
 
-public class AuthenticationResponse extends ApiResponse{
+import org.mmo.restaurantx.app.security.UserPrincipal;
+
+public class AuthenticationResponse extends ApiResponse {
     
     private String accessToken;
     private final String tokenType = "Bearer";
+    private UserPrincipal userPrincipal;
     
     public AuthenticationResponse() {
     }
@@ -24,4 +27,11 @@ public class AuthenticationResponse extends ApiResponse{
         return tokenType;
     }
     
+    public UserPrincipal getUserPrincipal() {
+        return userPrincipal;
+    }
+
+    public void setUserPrincipal(UserPrincipal user) {
+        this.userPrincipal = user;
+    }
 }

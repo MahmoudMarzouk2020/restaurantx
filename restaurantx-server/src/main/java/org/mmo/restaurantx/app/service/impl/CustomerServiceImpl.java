@@ -34,7 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
     
     @Override
     public ResponseEntity<AvailableRestaurantTablesResponse> getAvailableTablesByDateTimeAndPersonsNumber(String dateTime, int numberOfPersons) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy-HH:mm:ss");
         LocalDateTime parsedDateTime = LocalDateTime.parse(dateTime, formatter);
         
         Set<Reservation> reservations = reservationRepository.findAllByStartLessThanEqualAndEndGreaterThanEqual(parsedDateTime, parsedDateTime);
